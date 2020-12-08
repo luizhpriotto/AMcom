@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+
+   afcc:
+     image: registry.castrolanda.coop.br/afcc:prod
+     volumes:
+       - /opt/logs/:/var/log/apache2/
+       - /opt/file_server/afcc/img/:/var/www/afcc/img/
+       - /opt/file_server/afcc/session:/var/lib/php/session/
+     deploy:
+       labels:
+         - "traefik.enable=true"
+         - "traefik.docker.network=sites_afcc"
+         - "traefik.http.middlewares.afcc-mid.redirectscheme.scheme=https"
+         - "traefik.http.routers.afcc-web.middlewares=afcc-mid"
+         - "traefik.http.routers.afcc-web.rule=Host(`afcc.castrolanda.coop.br`,`afcc.com.br`,`www.afcc.com.br`)"
+         - "traefik.http.routers.afcc-web.entrypoints=web"
+         - "traefik.http.routers.afcc-websecure.rule=Host(`afcc.castrolanda.coop.br`,`afcc.com.br`,`www.afcc.com.br`)"
+         - "traefik.http.routers.afcc-websecure.service=afcc-svc"
+         - "traefik.http.services.afcc-svc.loadbalancer.server.port=80"
+         - "traefik.http.routers.afcc-websecure.entrypoints=websecure"
+         - "traefik.http.routers.afcc-websecure.tls.certresolver=myresolver"
+         - "traefik.http.routers.afcc-websecure.tls=true"
+       mode: replicated
+       replicas: 2
+       restart_policy:
+         condition: on-failure
+         delay: 3s
+     environment:
+       SITE_NAME: afcc
+     networks:
+       - manager
+
+   traefik:
+     image: traefik:2.3
+     ports:
+       - "80:80"
+       - "8081:8080"
+       - "443:443"
+     deploy:
+      mode: global
+      placement:
+        constraints: [node.role==manager]
+     volumes:
+       - /var/run/docker.sock:/var/run/docker.sock
+       - /opt/file_server/ssl/acme.json:/acme.json
+       - /opt/file_server/ssl/traefik.toml:/traefik.toml
+     networks:
+       - manager
+
+networks:
+  manager:
