@@ -33,9 +33,9 @@ pipeline {
         success {
             echo 'Creating the DNS to access de aplication on $SCOPE...'
             echo 'shark-$SCOPE$BUILD_NUMBER.alegra.com.br'
-            sh 'curl -X POST "https://api.cloudflare.com/client/v4/zones/023e105f4ecef8ad9ca31a8372d0c353/dns_records" \
+            sh 'curl -X POST "https://api.cloudflare.com/client/v4/zones/cfb6a7f79905716da43fa085422ffcb3/dns_records" \
                 -H "X-Auth-Email: luiz_priotto@castrolanda.coop.br" \
-                -H "X-Auth-Key: $CLOUDFLARE_API_KEY" \
+                -H "X-Auth-Key: 34bc1d0cde15163b7fde296322d0e54e05c4c" \
                 -H "Content-Type: application/json" \
                 -d "type=A&name=shark-$SCOPE$BUILD_NUMBER.alegra.com.br&content=177.91.35.105&ttl=120&priority=10&proxied=false"'
         }
