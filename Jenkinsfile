@@ -2,12 +2,7 @@ pipeline {
     agent any
     stages {
         stage('Testing...'){
-            steps{
-                script{
-                    env.BNUMBER = ${currentBuild.number}
-                    echo env.BNUMBER
-                }
-                
+            steps{                
                 echo "previous build number: ${currentBuild.previousBuild.getNumber()}"
                 echo "${env.SCOPE}${currentBuild.number}"
             }
@@ -28,7 +23,7 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
                 sh 'pwd'
                 sh 'ls -ltr'
-                sh 'echo build -t 10.1.0.60:8083/shark:$SCOPE --no-cache .'
+                sh 'echo build -t 10.1.0.60:8083/shark:$SCOPE$BUILD_NUMBER --no-cache .'
             }
         }
     }
