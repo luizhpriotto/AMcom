@@ -15,11 +15,9 @@ pipeline {
                     parameters: [choice(name: 'RELEASE_PROD', choices: ['yes', 'no'], description: 'Go ahead to deploy on prod (shark.alegra.com.br)?')]
                     if (env.RELEASE_PROD == 'yes') {
                         echo "You have accepted PROD."
-                        git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
+                        git branch: '*/master', url: 'https://github.com/luizhpriotto/amcom/'
                     }
                 }
-                echo 'branch:'
-                git branch: env.BRANCH, url: 'https://github.com/luizhpriotto/amcom/'
                     echo "${env.RELEASE_PROD}"
                     echo "${env.SCOPE}"
                     echo "${env.BRANCH}"
