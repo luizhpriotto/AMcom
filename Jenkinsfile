@@ -1,13 +1,14 @@
 pipeline {
     agent any
     stages {
-        stage('Building...'){
+        stage('Testing...'){
             steps{
                 echo "current build number: ${currentBuild.number}"
                 echo "previous build number: ${currentBuild.previousBuild.getNumber()}"
+                echo "${env.SCOPE}${currentBuild.number}"
             }
         }
-        stage('Deploying on the:'){
+        stage('Trying to buklding on: '${env.SCOPE}){
             steps{
                 script{
                     if (env.SCOPE == 'prd'){
@@ -20,8 +21,7 @@ pipeline {
                         }
                     }
                 }
-                    echo "${env.RELEASE_PROD}"
-                    echo "${env.SCOPE}${currentBuild.number}"
+
             }   
         }
     }
