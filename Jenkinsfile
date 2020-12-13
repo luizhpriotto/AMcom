@@ -14,6 +14,8 @@ pipeline {
                     parameters: [choice(name: 'RELEASE_SCOPE', choices: ['dev', 'qas', 'prd'], description: 'What is the release scope?')]
                 }
                     echo "${env.RELEASE_SCOPE}"
+                    echo "${env.SCOPE}"
+                    echo "${env.BRANCH}"
             }   
         }
     }
