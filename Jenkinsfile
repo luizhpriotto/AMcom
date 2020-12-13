@@ -12,7 +12,7 @@ pipeline {
                 script{
                     env.RELEASE_PROD = input message: 'Select the enviroment...', ok: 'Release!', 
                     parameters: [choice(name: 'RELEASE_PROD', choices: ['yes', 'no'], description: 'Go ahead to deploy on prod (shark.alegra.com.br)?')]
-                    if env.RELEASE_PROD.equals("yes"){
+                    if (env.RELEASE_PROD == 'yes') {
                         echo "ok"
                     }
                     else {
