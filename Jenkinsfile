@@ -37,7 +37,7 @@ pipeline {
                 -H "X-Auth-Email: luiz_priotto@castrolanda.coop.br" \
                 -H "X-Auth-Key: 34bc1d0cde15163b7fde296322d0e54e05c4c" \
                 -H "Content-Type: application/json" \
-                --data '{"type":"A","name":"shark.alegra.com.br","content":"177.91.38.105","ttl":120,"priority":10,"proxied":false}''
+                --data "{\"type\":\"A\",\"name\":\"shark.alegra.com.br\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}"'
         }
     }
 }
