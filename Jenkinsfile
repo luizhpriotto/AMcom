@@ -30,12 +30,13 @@ pipeline {
             }
         }
         stage('oO building Oo'){
-            script{                               
-                dir("node-project") {
-                        dockerImage = docker.build registry + "/shark:$SCOPE$BUILD_NUMBER"
-                        docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
-                     }
+            stage{
+                script{                               
+                    dir("node-project") {
+                            dockerImage = docker.build registry + "/shark:$SCOPE$BUILD_NUMBER"
+                            docker.withRegistry( '10.1.0.60:8083', registryCredential ) { dockerImage.push() }
+                    }
+                }
             }
         }
         stage('Adjusting default images'){
@@ -44,14 +45,14 @@ pipeline {
                         echo 'gravando imagem padrão $SCOPO.'
                         sh 'docker tag $(docker images | grep $SCOPE$BUILD_NUMBER  | awk -e "{print $3}") 10.1.0.60:8083/shark:$SCOPE'
                         sh 'docker push 10.1.0.60:8083/shark:$SCOPE'
-                    }
-                }
+                 }
             }
         }
     }
-    post {
-        success {
-            script{
+ }
+post {
+    success {
+        script{
                 env.DATA = '{\"type\":\"A\",\"name\":\"shark-$SCOPE$BUILD_NUMBER.alegra.com.br\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
                 echo 'Creating the DNS to access de aplication on $SCOPE...'                
                 sh 'curl -X POST "https://api.cloudflare.com/client/v4/zones/cfb6a7f79905716da43fa085422ffcb3/dns_records" \
@@ -60,8 +61,6 @@ pipeline {
                     -H "Content-Type: application/json" \
                     --data $DATA'
                 echo 'https://shark-$SCOPE$BUILD_NUMBER.alegra.com.br'
-            }
-
         }
     }
 }
