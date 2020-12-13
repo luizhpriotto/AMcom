@@ -18,28 +18,51 @@ pipeline {
                             echo "You have accepted PROD."
                             git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
                         }
+                        else{
+                            git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
+                        }
                     }
-                }
-                git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
+                }                
                 dir("node-project") {
                         sh 'docker build -t shark:$SCOPE$BUILD_NUMBER --no-cache .'
                      }
                 sh 'echo docker run --name shark-demo -p 80:8080 -d shark:$SCOPE$BUILD_NUMBER'
-                sh ''
+            }
+        }
+        stage('Adjusting default images'){
+            steps{
+                script{
+                    if (env.SCOPE == 'prd'){
+                        echo "gravando imagem padrão prd."
+                        sh "docker tag $(docker images | grep $SCOPE$BUILD_NUMBER  | awk -e '{print $3}') 10.1.0.60:8083/shark:$SCOPE"
+                        sh "docker push 10.1.0.60:8083/shark:$SCOPE"
+                    }
+                    else if (env.SCOPE == 'qas'){
+                        echo "gravando imagem padrão qas."
+                        sh "docker tag $(docker images | grep $SCOPE$BUILD_NUMBER  | awk -e '{print $3}') 10.1.0.60:8083/shark:$SCOPE"
+                        sh "docker push 10.1.0.60:8083/shark:$SCOPE"
+                    }
+                    else{
+                        echo "gravando imagem padrão dev."
+                        sh "docker tag $(docker images | grep $SCOPE$BUILD_NUMBER  | awk -e '{print $3}') 10.1.0.60:8083/shark:$SCOPE"
+                        ah "docker push 10.1.0.60:8083/shark:$SCOPE"
+
+                    }
+                }
             }
         }
     }
     post {
         success {
             script{
-                env.DATA = '{\"type\":\"A\",\"name\":\"shark.alegra.com.br\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
-                echo 'Creating the DNS to access de aplication on $SCOPE...'
-                echo 'shark-$SCOPE$BUILD_NUMBER.alegra.com.br'
+                env.DATA = '{\"type\":\"A\",\"name\":\"shark-$SCOPE$BUILD_NUMBER.alegra.com.br\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
+                echo 'Creating the DNS to access de aplication on $SCOPE...'                
                 sh 'curl -X POST "https://api.cloudflare.com/client/v4/zones/cfb6a7f79905716da43fa085422ffcb3/dns_records" \
                     -H "X-Auth-Email: luiz_priotto@castrolanda.coop.br" \
                     -H "X-Auth-Key: 34bc1d0cde15163b7fde296322d0e54e05c4c" \
                     -H "Content-Type: application/json" \
                     --data $DATA'
+                echo 'https://shark-$SCOPE$BUILD_NUMBER.alegra.com.br'
             }
 
         }
