@@ -10,7 +10,7 @@ pipeline {
         stage('Deploying on the:'){
             steps{
                 script{
-                    if env.SCOPE == 'prd'{
+                    if (env.SCOPE == 'prd'){
                         echo 'PROD:'
                         env.RELEASE_PROD = input message: 'Select the enviroment...', ok: 'Release!', 
                         parameters: [choice(name: 'RELEASE_PROD', choices: ['yes', 'no'], description: 'Go ahead to deploy on prod (shark.alegra.com.br)?')]
