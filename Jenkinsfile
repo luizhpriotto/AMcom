@@ -8,12 +8,12 @@ pipeline {
                 echo "${env.SCOPE}${currentBuild.number}"
             }
         }
-        stage('Trying to buklding on: '${env.SCOPE}){
+        stage('Preparing to build: '){
             steps{
                 script{
                     if (env.SCOPE == 'prd'){
                         echo 'PROD:'
-                        env.RELEASE_PROD = input message: 'Select the enviroment...', ok: 'Release!', 
+                        env.RELEASE_PROD = input message: 'Select YES or NO to deploy on production...', ok: 'Release!', 
                         parameters: [choice(name: 'RELEASE_PROD', choices: ['yes', 'no'], description: 'Go ahead to deploy on prod (shark.alegra.com.br)?')]
                         if (env.RELEASE_PROD == 'yes') {
                             echo "You have accepted PROD."
@@ -21,7 +21,10 @@ pipeline {
                         }
                     }
                 }
-
+            }
+            steps{
+                 git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
+                 sh 'ls -ltr'
             }   
         }
     }
