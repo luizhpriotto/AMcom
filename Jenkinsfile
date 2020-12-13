@@ -33,8 +33,8 @@ pipeline {
             steps{
                 script{                               
                     dir("node-project") {
-                            echo 'dockerImage = docker.build "$registry/shark:$SCOPE$BUILD_NUMBER"'
-                            //docker.withRegistry( '10.1.0.60:8083', registryCredential ) { dockerImage.push() }
+                            dockerImage = docker.build "${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                            docker.withRegistry( '10.1.0.60:8083', registryCredential ) { dockerImage.push() }
                     }
                 }
             }
@@ -43,6 +43,8 @@ pipeline {
             steps{
                 script{
                         echo 'gravando imagem padrão $SCOPE.'
+                        echo "gravando imagem padrão $SCOPE."
+                        echo "gravando imagem padrão ${SCOPE}."
                         sh "docker tag \$(docker images | grep \${SCOPE}\${BUILD_NUMBER}  | awk '{print \$3}' 10.1.0.60:8083/shark:\${SCOPE}"
                         sh 'docker push 10.1.0.60:8083/shark:$SCOPE'
                  }
