@@ -7,6 +7,9 @@ pipeline {
                 echo "previous build number: ${currentBuild.previousBuild.getNumber()}"
             }
         }
+        stage('Deploying on the:'){
+            input message: 'Select the enviroment...', parameters: [choice(choices: ['dev', 'qas', 'prd'], description: '', name: 'env')]
+        }
     }
     post {
         always {
