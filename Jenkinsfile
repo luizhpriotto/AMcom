@@ -19,6 +19,8 @@ pipeline {
                         echo "not ok"
                     }
                 }
+                echo 'branch:'
+                git branch: env.BRANCH, url: 'https://github.com/luizhpriotto/amcom/'
                     echo "${env.RELEASE_PROD}"
                     echo "${env.SCOPE}"
                     echo "${env.BRANCH}"
