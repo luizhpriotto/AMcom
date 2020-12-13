@@ -5,6 +5,7 @@ pipeline {
             steps{
                 script{
                     env.BNUMBER = ${currentBuild.number}
+                    echo env.BNUMBER
                 }
                 
                 echo "previous build number: ${currentBuild.previousBuild.getNumber()}"
