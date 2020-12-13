@@ -30,6 +30,6 @@ pipeline {
     post {
         always {
             echo 'post echo...'
-        }
+    
     }
 }
