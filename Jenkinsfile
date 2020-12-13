@@ -30,7 +30,7 @@ pipeline {
             }
         }
         stage('oO building Oo'){
-            stage{
+            steps{
                 script{                               
                     dir("node-project") {
                             dockerImage = docker.build registry + "/shark:$SCOPE$BUILD_NUMBER"
