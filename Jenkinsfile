@@ -11,6 +11,7 @@ pipeline {
         stage('Preparing to build:'){
             steps{
                 script{
+                    env.BNUMBER = ${currentBuild.number}
                     if (env.SCOPE == 'prd'){
                         echo 'PROD:'
                         env.RELEASE_PROD = input message: 'Select YES or NO to deploy on production...', ok: 'Release!', 
@@ -24,7 +25,7 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
                 sh 'pwd'
                 sh 'ls -ltr'
-                sh 'echo build -t 10.1.0.60:8083/shark:$SCOPE --no-cache .'
+                sh 'echo build -t 10.1.0.60:8083/shark:$SCOPE$BNUMBER --no-cache .'
             }
         }
     }
