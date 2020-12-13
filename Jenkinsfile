@@ -42,10 +42,8 @@ pipeline {
         stage('Adjusting default images'){
             steps{
                 script{
-                        echo 'gravando imagem padrão $SCOPE.'
-                        echo "gravando imagem padrão $SCOPE."
-                        echo "gravando imagem padrão ${SCOPE}."
-                        sh "docker tag \$(docker images | grep \${SCOPE}\${BUILD_NUMBER}  | awk '{print \$3}' 10.1.0.60:8083/shark:\${SCOPE}"
+                        echo "Tagging new default image ${SCOPE}."
+                        sh "docker tag \$(docker images | grep \${SCOPE}\${BUILD_NUMBER}  | awk '{print \$3}') 10.1.0.60:8083/shark:\${SCOPE}"
                         sh 'docker push 10.1.0.60:8083/shark:$SCOPE'
                  }
             }
