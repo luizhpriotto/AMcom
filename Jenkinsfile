@@ -3,7 +3,8 @@ pipeline {
     stages {
         stage('Building...'){
             steps{
-                echo env.currentBuild
+                echo "current build number: ${currentBuild.number}"
+                echo "previous build number: ${currentBuild.previousBuild.getNumber()}"
             }
         }
     }
