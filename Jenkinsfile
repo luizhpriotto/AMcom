@@ -24,29 +24,17 @@ pipeline {
                     }
                 }                
                 dir("node-project") {
-                        sh 'docker build -t shark:$SCOPE$BUILD_NUMBER --no-cache .'
+                        sh 'docker build -t 10.1.0.60:8083/shark:$SCOPE$BUILD_NUMBER --no-cache .'
+                        sh 'docker pull 10.1.0.60:8083/shark:$SCOPE$BUILD_NUMBER'
                      }
-                sh 'echo docker run --name shark-demo -p 80:8080 -d shark:$SCOPE$BUILD_NUMBER'
             }
         }
         stage('Adjusting default images'){
             steps{
                 script{
-                    if (env.SCOPE == 'prd'){
-                        echo "gravando imagem padrão prd."
-                        sh "docker tag $(docker images | grep $SCOPE$BUILD_NUMBER  | awk -e '{print $3}') 10.1.0.60:8083/shark:$SCOPE"
-                        sh "docker push 10.1.0.60:8083/shark:$SCOPE"
-                    }
-                    else if (env.SCOPE == 'qas'){
-                        echo "gravando imagem padrão qas."
-                        sh "docker tag $(docker images | grep $SCOPE$BUILD_NUMBER  | awk -e '{print $3}') 10.1.0.60:8083/shark:$SCOPE"
-                        sh "docker push 10.1.0.60:8083/shark:$SCOPE"
-                    }
-                    else{
-                        echo "gravando imagem padrão dev."
-                        sh "docker tag $(docker images | grep $SCOPE$BUILD_NUMBER  | awk -e '{print $3}') 10.1.0.60:8083/shark:$SCOPE"
-                        ah "docker push 10.1.0.60:8083/shark:$SCOPE"
-
+                        echo 'gravando imagem padrão $SCOPO.'
+                        sh 'docker tag $(docker images | grep $SCOPE$BUILD_NUMBER  | awk -e "{print $3}") 10.1.0.60:8083/shark:$SCOPE'
+                        sh 'docker push 10.1.0.60:8083/shark:$SCOPE'
                     }
                 }
             }
