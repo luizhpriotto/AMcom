@@ -8,7 +8,7 @@ pipeline {
                 echo "${env.SCOPE}${currentBuild.number}"
             }
         }
-        stage('Preparing to build: '){
+        stage('Preparing to build:'){
             steps{
                 script{
                     if (env.SCOPE == 'prd'){
@@ -21,11 +21,9 @@ pipeline {
                         }
                     }
                 }
+                git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
+                sh 'ls -ltr'
             }
-            steps{
-                 git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
-                 sh 'ls -ltr'
-            }   
         }
     }
     post {
