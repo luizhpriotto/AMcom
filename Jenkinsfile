@@ -3,7 +3,10 @@ pipeline {
     stages {
         stage('Testing...'){
             steps{
-                env.BNUMBER = env.currentBuild.number
+                script{
+                    env.BNUMBER = ${currentBuild.number}
+                }
+                
                 echo "previous build number: ${currentBuild.previousBuild.getNumber()}"
                 echo "${env.SCOPE}${currentBuild.number}"
             }
