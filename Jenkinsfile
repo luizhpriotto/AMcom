@@ -24,7 +24,7 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
                 sh 'pwd'
                 sh 'ls -ltr'
-                sh 'docker build -t 10.1.0.60:8083/shark:latest --no-cache .'
+                sh 'echo build -t 10.1.0.60:8083/shark:$SCOPE --no-cache .'
             }
         }
     }
