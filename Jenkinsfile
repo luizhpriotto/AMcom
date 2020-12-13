@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Building...'){
             steps{
-                echo 'teste de buildin...'
+                echo env.VARNAME
             }
         }
     }
