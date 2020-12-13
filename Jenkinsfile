@@ -8,7 +8,9 @@ pipeline {
             }
         }
         stage('Deploying on the:'){
-            input message: 'Select the enviroment...', parameters: [choice(choices: ['dev', 'qas', 'prd'], description: '', name: 'env')]
+            steps{
+                input message: 'Select the enviroment...', parameters: [choice(choices: ['dev', 'qas', 'prd'], description: '', name: 'env')]
+                }
         }
     }
     post {
