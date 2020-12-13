@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Building...'){
             steps{
-                echo env.VARNAME
+                echo env.currentBuild
             }
         }
     }
