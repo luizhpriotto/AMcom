@@ -1,4 +1,8 @@
 pipeline {
+      environment {
+        registry = "10.1.0.60:8083"
+        registryCredential = 'nexus'
+         }
     agent any
     stages {
         stage('Testing...'){
@@ -22,10 +26,15 @@ pipeline {
                             git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
                         }
                     }
-                }                
+                } 
+            }
+        }
+        stage('oO building Oo'){
+            script{                               
                 dir("node-project") {
-                        sh 'docker build -t 10.1.0.60:8083/shark:$SCOPE$BUILD_NUMBER --no-cache .'
-                        sh 'docker pull 10.1.0.60:8083/shark:$SCOPE$BUILD_NUMBER'
+                        dockerImage = docker.build registry + "/shark:$SCOPE$BUILD_NUMBER"
+                        docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
                      }
             }
         }
