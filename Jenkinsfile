@@ -24,6 +24,8 @@ pipeline {
                 sh 'pwd'
                 sh 'ls -ltr'
                 sh 'cd node-project'
+                sh 'pwd'
+                sh 'ls'
                 sh 'docker build -t shark:$SCOPE$BUILD_NUMBER --no-cache .'
                 sh 'echo docker run --name shark-demo -p 80:8080 -d shark:$SCOPE$BUILD_NUMBER'
                 sh ''
