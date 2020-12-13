@@ -9,8 +9,12 @@ pipeline {
         }
         stage('Deploying on the:'){
             steps{
-                input message: 'Select the enviroment...', parameters: [choice(choices: ['dev', 'qas', 'prd'], description: '', name: 'env')]
+                script{
+                    env.RELEASE_SCOPE = input message: 'Select the enviroment...', ok: 'Release!', 
+                    parameters: [choice(name: 'RELEASE_SCOPE', choices: ['dev', 'qas', 'prd'], description: 'What is the release scope?')]
                 }
+                    echo "${env.RELEASE_SCOPE}"
+            }   
         }
     }
     post {
