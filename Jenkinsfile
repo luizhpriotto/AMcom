@@ -23,13 +23,21 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
                 sh 'pwd'
                 sh 'ls -ltr'
-                sh 'echo build -t 10.1.0.60:8083/shark:$SCOPE$BUILD_NUMBER --no-cache .'
+                sh 'docker build -t shark:$SCOPE$BUILD_NUMBER --no-cache .'
+                sh 'echo docker run --name shark-demo -p 80:8080 -d shark:$SCOPE$BUILD_NUMBER'
+                sh ''
             }
         }
     }
     post {
-        always {
-            echo 'post echo...'
+        success {
+            echo 'Creating the DNS to access de aplication on $SCOPE...'
+            echo 'shark-$SCOPE$BUILD_NUMBER.alegra.com.br'
+            sh 'curl -X POST "https://api.cloudflare.com/client/v4/zones/023e105f4ecef8ad9ca31a8372d0c353/dns_records" \
+                -H "X-Auth-Email: luiz_priotto@castrolanda.coop.br" \
+                -H "X-Auth-Key: $CLOUDFLARE_API_KEY" \
+                -H "Content-Type: application/json" \
+                -d "type=A&name=shark-$SCOPE$BUILD_NUMBER.alegra.com.br&content=177.91.35.105&ttl=120&priority=10&proxied=false"'
         }
     }
 }
