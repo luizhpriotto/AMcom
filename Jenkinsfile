@@ -10,10 +10,16 @@ pipeline {
         stage('Deploying on the:'){
             steps{
                 script{
-                    env.RELEASE_SCOPE = input message: 'Select the enviroment...', ok: 'Release!', 
-                    parameters: [choice(name: 'RELEASE_SCOPE', choices: ['dev', 'qas', 'prd'], description: 'What is the release scope?')]
+                    env.RELEASE_PROD = input message: 'Select the enviroment...', ok: 'Release!', 
+                    parameters: [choice(name: 'RELEASE_PROD', choices: ['yes', 'no'], description: 'Go ahead to deploy on prod (shark.alegra.com.br)?')]
+                    if env.RELEASE_PROD.equals("yes"){
+                        echo "ok"
+                    }
+                    else {
+                        echo "not ok"
+                    }
                 }
-                    echo "${env.RELEASE_SCOPE}"
+                    echo "${env.RELEASE_PROD}"
                     echo "${env.SCOPE}"
                     echo "${env.BRANCH}"
             }   
