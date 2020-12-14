@@ -7,7 +7,7 @@ services:
      deploy:
        labels:
          - "traefik.enable=true"
-         - "traefik.docker.network=node_shark"
+         - "traefik.docker.network=shark_prd"
          - "traefik.http.middlewares.shark-mid.redirectscheme.scheme=https"
          - "traefik.http.routers.shark-web.middlewares=shark-mid"
          - "traefik.http.routers.shark-web.rule=Host(`shark.alegra.com.br`)"
