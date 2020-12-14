@@ -36,21 +36,22 @@ pipeline {
                             dockerImage = docker.build "${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                             docker.withRegistry( 'http://10.1.0.60:8083/', 'nexus') { 
                                 dockerImage.push()
+                                echo "Tagging new default image ${SCOPE}."
                                 dockerImage.push("${SCOPE}") 
                                 }
                     }
                 }
             }
         }
-        stage('Adjusting default images'){
-            steps{
-                script{
-                        echo "Tagging new default image ${SCOPE}."
-                        sh "docker tag \$(docker images | grep \${SCOPE}\${BUILD_NUMBER}  | awk '{print \$3}') 10.1.0.60:8083/shark:\${SCOPE}"
-                        sh 'docker push 10.1.0.60:8083/shark:$SCOPE'
-                 }
-            }
-        }
+       // stage('Adjusting default images'){
+         //   steps{
+           //     script{
+             //           echo "Tagging new default image ${SCOPE}."
+               //         sh "docker tag \$(docker images | grep \${SCOPE}\${BUILD_NUMBER}  | awk '{print \$3}') 10.1.0.60:8083/shark:\${SCOPE}"
+                 //       sh 'docker push 10.1.0.60:8083/shark:$SCOPE'
+                // }
+           // }
+       // }
     }
  }
 post {
