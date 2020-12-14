@@ -1,0 +1,27 @@
+[global]
+  checkNewVersion = true
+  sendAnonymousUsage = true
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+
+  [entryPoints.websecure]
+    address = ":443"
+
+[certificatesResolvers.myresolver.acme]
+  email = "luiz_priotto@castrolanda.coop.br"
+  storage = "acme.json"
+  [certificatesResolvers.myresolver.acme.tlsChallenge]
+#  [certificatesResolvers.myresolver.acme.httpChallenge]
+#    entryPoint = "web"
+
+[log]
+  level = "INFO"
+
+[api]
+  insecure = true
+
+[providers.docker]
+  endpoint = "unix:///var/run/docker.sock"
+  swarmMode = true
