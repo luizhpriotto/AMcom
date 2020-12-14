@@ -88,7 +88,7 @@ pipeline {
         success {
             script{
                     if (env.RELEASE_QAS == 'no'){
-                        env.FQDN = "shark${SCOPE}${BUILD_NUMBER}.alegra.com.br"
+                        env.FQDN = "sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br"
                         echo "FQDN: ${FQDN}"
                         env.DATA = '{\"type\":\"A\",\"name\":\"'+"${FQDN}"+'\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
                         echo "Creating the DNS to access de aplication on ${SCOPE}..."                
@@ -97,7 +97,7 @@ pipeline {
                             -H "X-Auth-Key: 34bc1d0cde15163b7fde296322d0e54e05c4c" \
                             -H "Content-Type: application/json" \
                             --data $DATA'
-                        echo "https://shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
+                        echo "https://sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br"
                     }
                     else if (env.RELEASE_QAS == 'yes'){
                         echo "https://sharkh.alegra.com.br"
