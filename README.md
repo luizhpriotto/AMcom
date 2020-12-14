@@ -20,8 +20,8 @@
 
 
 ## Testing
-* PRD -> master (pending)
-* QAS -> master (pending)
+* PRD -> master (ok)
+* QAS -> master (ok)
 * QAS -> version1 (pending)
-* QAS -> new service (pending)
-* Change the branch "version".
+* QAS -> new service (ok)
+* Changing files on the branch "version" (pending).

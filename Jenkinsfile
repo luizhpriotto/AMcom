@@ -54,7 +54,7 @@ pipeline {
                                 sh "docker service update shark_${SCOPE} --with-registry-auth --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
                             }  
                         else{
-                            env.RELEASE_QAS = input message: 'Is it an upate?', ok: 'Release!', 
+                            env.RELEASE_QAS = input message: 'Would you like to update the current service?', ok: 'Release!', 
                             parameters: [choice(name: 'RELEASE_QAS', choices: ['yes', 'no'], description: 'Go ahead to deploy on QAS (sharkh.alegra.com.br)?')]
                             if (env.RELEASE_QAS == 'yes') {
                                 echo "updating..."
