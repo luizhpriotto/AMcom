@@ -36,9 +36,9 @@ pipeline {
             steps{
                 script{                               
                     dir("node-project") {
-                        dockerImage = docker.build "${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                        dockerImage = docker.build "shark:${SCOPE}${BUILD_NUMBER}"
                         docker.withRegistry( 'http://10.1.0.60:8083/', 'nexus') { 
-                            dockerImage.push()
+                            dockerImage.push("${registry}/shark:${SCOPE}${BUILD_NUMBER}")
                             echo "Tagging new default image ${SCOPE}."
                             dockerImage.push("${SCOPE}") 
                         }
@@ -50,6 +50,7 @@ pipeline {
                 steps {
                     script {
                         if (env.SCOPE == 'prd'){
+                                sh "docker pull 10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
                                 sh "docker service update shark_${SCOPE} --resolve-image=always --with-registry-auth --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
                             }  
                         else{
@@ -57,18 +58,20 @@ pipeline {
                             parameters: [choice(name: 'RELEASE_QAS', choices: ['yes', 'no'], description: 'Go ahead to deploy on QAS (sharkh.alegra.com.br)?')]
                             if (env.RELEASE_QAS == 'yes') {
                                 echo "updating..."
+                                sh "docker pull 10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
                                 sh "docker service update shark_${SCOPE} --resolve-image=always --with-registry-auth --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
                             }
                             else{
                                 echo "creating.."
+                                env.HOST = "(`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br`)"
                                 sh "docker service create --name shark_${SCOPE}${BUILD_NUMBER} --network shark_qas --with-registry-auth \
                                 --label traefik.enable=true \
                                 --label traefik.docker.network=shark_${SCOPE}${BUILD_NUMBER} \
                                 --label traefik.http.middlewares.sharkh${SCOPE}${BUILD_NUMBER}-mid.redirectscheme.scheme=https \
                                 --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.middlewares=sharkh${SCOPE}${BUILD_NUMBER}-mid \
-                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.rule=Host`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br` \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.rule=Host${HOST} \
                                 --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.entrypoints=web \
-                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.rule=Host`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br` \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.rule=Host${HOST} \
                                 --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.service=sharkh${SCOPE}${BUILD_NUMBER}-svc \
                                 --label traefik.http.services.sharkh${SCOPE}${BUILD_NUMBER}-svc.loadbalancer.server.port=8080 \
                                 --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.entrypoints=websecure \
