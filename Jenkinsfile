@@ -51,7 +51,7 @@ pipeline {
                     script {
                         if (env.SCOPE == 'prd'){
                                 sh "docker pull 10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
-                                sh "docker service update shark_${SCOPE} --resolve-image=always --with-registry-auth --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
+                                sh "docker service update shark_${SCOPE} --with-registry-auth --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
                             }  
                         else{
                             env.RELEASE_QAS = input message: 'Is it an upate?', ok: 'Release!', 
@@ -59,7 +59,7 @@ pipeline {
                             if (env.RELEASE_QAS == 'yes') {
                                 echo "updating..."
                                 sh "docker pull 10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
-                                sh "docker service update shark_${SCOPE} --resolve-image=always --with-registry-auth --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
+                                sh "docker service update shark_${SCOPE} --with-registry-auth --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
                             }
                             else{
                                 echo "creating.."
