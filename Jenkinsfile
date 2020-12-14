@@ -63,7 +63,7 @@ pipeline {
                             }
                             else{
                                 echo "creating.."
-                                env.HOST = "\\(`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br`\\)"
+                                env.HOST = "\\(\\`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br\\`\\)"
                                 sh "docker service create --name shark_${SCOPE}${BUILD_NUMBER} --network shark_qas --with-registry-auth \
                                 --label traefik.enable=true \
                                 --label traefik.docker.network=shark_${SCOPE}${BUILD_NUMBER} \
