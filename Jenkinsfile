@@ -50,7 +50,7 @@ pipeline {
                 steps {
                     script {
                         if (env.SCOPE == 'prd'){
-                                sh "docker service update shark_${SCOPE} --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER} --with-registry-auth"
+                                sh "docker service update shark_${SCOPE} --image=10.1.0.60:8083/shark:prd117 --with-registry-auth"
                             }  
                         else{
                             env.RELEASE_QAS = input message: 'Is it an upate?', ok: 'Release!', 
