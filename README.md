@@ -16,6 +16,8 @@
 * [Traefik](http://10.1.0.60:9081)
 * [Nexus](http://10.1.0.60:8081)
 * [Rancher](http://10.1.0.60:8280)
+* [Vizualizer](http://10.1.0.60:8282)
+
 
 ## Testing
 * PRD -> master (pending)
