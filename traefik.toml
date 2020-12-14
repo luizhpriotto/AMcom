@@ -12,9 +12,12 @@
 [certificatesResolvers.myresolver.acme]
   email = "luiz_priotto@castrolanda.coop.br"
   storage = "acme.json"
-  [certificatesResolvers.myresolver.acme.tlsChallenge]
+#  [certificatesResolvers.myresolver.acme.tlsChallenge]
 #  [certificatesResolvers.myresolver.acme.httpChallenge]
 #    entryPoint = "web"
+[acme.dnsChallenge]
+  provider = "cloudflare"
+  delayBeforeCheck = 1
 
 [log]
   level = "INFO"
