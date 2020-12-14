@@ -21,3 +21,4 @@
 * QAS -> master (pending)
 * QAS -> version1 (pending)
 * QAS -> new service (pending)
+* Change the branch "version".
