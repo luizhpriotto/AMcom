@@ -72,7 +72,7 @@ pipeline {
     post {
         success {
             script{
-                    if (env.SCOPE != 'prd'){
+                    if (env.RELEASE_QAS == 'no'){
                         env.FQDN = "shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
                         echo "FQDN: ${FQDN}"
                         env.DATA = '{\"type\":\"A\",\"name\":\"'+"${FQDN}"+'\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
@@ -84,7 +84,12 @@ pipeline {
                             --data $DATA'
                         echo "https://shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
                     }
-                    echo "https://shark.alegra.com.br"
+                    else if (env.RELEASE_QAS == 'yes'){
+                        echo "https://sharkh.alegra.com.br"
+                    }
+                    else{
+                         echo "https://shark.alegra.com.br"
+                    }             
             }
         }
     }
