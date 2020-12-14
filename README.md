@@ -15,3 +15,9 @@
 * [Jenkins](http://10.1.0.60:9090)
 * [Traefik](http://10.1.0.60:9081)
 * [Nexus](http://10.1.0.60:8081)
+
+## Testing
+* PRD -> master (pending)
+* QAS -> master (pending)
+* QAS -> version1 (pending)
+* QAS -> new service (pending)
