@@ -50,34 +50,20 @@ pipeline {
                 steps {
                     script {
                         if (env.SCOPE == 'prd'){
-                            try {
-                                echo "creating netwokrk.."
-                                sh "docker network create --driver=overlay --attachable shark-${SCOPE}"
-                            } 
-                            catch (err) {
-                                echo err.getMessage()
-                            } 
-                            try{ 
+                                sh "docker service update shark-${SCOPE} --detach=false --with-registry-auth --image ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                            }  
+                        else{
+                            env.RELEASE_QAS = input message: 'Is it an upate?', ok: 'Release!', 
+                            parameters: [choice(name: 'RELEASE_QAS', choices: ['yes', 'no'], description: 'Go ahead to deploy on QAS (sharkh.alegra.com.br)?')]
+                            if (env.RELEASE_QAS == 'yes') {
                                 echo "updating..."
                                 sh "docker service update shark-${SCOPE} --detach=false --with-registry-auth --image ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                             }
-                            catch (err){
-                                echo err.getMessage()
-                            }                              
-                                echo "creating service"
-                                sh "docker service create --name shark-${SCOPE} --network shark-${SCOPE} --with-registry-auth -p 80:8080 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
-                        }
-                        else{
-                            try {
+                            else{
                                 echo "creating.."
                                 sh "docker network create --driver=overlay --attachable shark-${SCOPE}${BUILD_NUMBER}"
                                 sh "docker service create --name shark-${SCOPE}${BUILD_NUMBER} --network shark-${SCOPE}${BUILD_NUMBER} --with-registry-auth -p 80:8080 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
-                            } 
-                            catch (err) {
-                                echo err.getMessage()
-                            }                            
-                                echo "updating..."
-                                sh "docker service update shark-${SCOPE}${BUILD_NUMBER} --detach=false --with-registry-auth --image ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                            }    
                         }
                     }
                 }
