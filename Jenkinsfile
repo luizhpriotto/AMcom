@@ -50,21 +50,21 @@ pipeline {
                 steps {
                     script {
                         if (env.SCOPE == 'prd'){
-                                sh "docker service update shark_${SCOPE} --image=10.1.0.60:8083/shark:prd117 --with-registry-auth"
+                                sh "docker service update shark_${SCOPE} --resolve-image=always --with-registry-auth --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
                             }  
                         else{
                             env.RELEASE_QAS = input message: 'Is it an upate?', ok: 'Release!', 
                             parameters: [choice(name: 'RELEASE_QAS', choices: ['yes', 'no'], description: 'Go ahead to deploy on QAS (sharkh.alegra.com.br)?')]
                             if (env.RELEASE_QAS == 'yes') {
                                 echo "updating..."
-                                sh "docker service update shark_${SCOPE} --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER} --with-registry-auth"
+                                sh "docker service update shark_${SCOPE} --resolve-image=always --with-registry-auth --image=10.1.0.60:8083/shark:${SCOPE}${BUILD_NUMBER}"
                             }
                             else{
                                 echo "creating.."
-                                //sh "docker service create --name shark-${SCOPE}${BUILD_NUMBER} --network shark-${SCOPE}${BUILD_NUMBER} --with-registry-auth -p 80:8080 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
-                                sh 'docker network create --driver=overlay --attachable shark_${SCOPE}${BUILD_NUMBER}'
-                                sh 'docker service update shark_traefik --network-add shark_${SCOPE}${BUILD_NUMBER}'
-                                sh 'docker service create --name shark_${SCOPE}${BUILD_NUMBER} --network shark_${SCOPE}${BUILD_NUMBER} --with-registry-auth \
+                                // exemplo: sh "docker service create --name shark-${SCOPE}${BUILD_NUMBER} --network shark-${SCOPE}${BUILD_NUMBER} --with-registry-auth -p 80:8080 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                                //em uso: sh 'docker network create --driver=overlay --attachable shark_${SCOPE}${BUILD_NUMBER}'
+                                //sh 'docker service update shark_traefik --network-add shark_${SCOPE}${BUILD_NUMBER}'
+                                sh "docker service create --name shark_${SCOPE}${BUILD_NUMBER} --network shark_qas --with-registry-auth \
                                 --labels traefik.enable=true \
                                 --labels traefik.docker.network=shark_${SCOPE}${BUILD_NUMBER} \
                                 --labels traefik.http.middlewares.sharkh${SCOPE}${BUILD_NUMBER}-mid.redirectscheme.scheme=https \
@@ -77,7 +77,7 @@ pipeline {
                                 --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.entrypoints=websecure \
                                 --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls.certresolver=myresolver \
                                 --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls=true \
-                                ${registry}/shark:${SCOPE}${BUILD_NUMBER}'
+                                ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                             }    
                         }
                     }
