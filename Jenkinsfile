@@ -5,15 +5,15 @@ pipeline {
          }
     agent any
     stages {
-        stage('Cleaning...'){
-            steps{                
+        //stage('Cleaning...'){
+        //    steps{                
                 //env.BUILDTOCLEAN = ${currentBuild.previousBuild.getNumber()}
                 //echo "Will be implemented"
                 //sh "docker tag \$(docker images | grep \${SCOPE}\${BUILD_NUMBER}  | awk '{print \$3}' 10.1.0.60:8083/shark:\${SCOPE}"
                 //sh "docker images | grep \${SCOPE}\${BUILDTOCLEAN}  | awk '{print \$3}"
-                sh "echo Y | docker system prune -a"
-            }
-        }
+                //sh "echo Y | docker system prune -a"
+           // }
+       // }
         stage('Preparing to build:'){
             steps{
                 script{
