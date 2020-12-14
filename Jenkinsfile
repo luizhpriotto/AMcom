@@ -46,15 +46,12 @@ pipeline {
                 }
             }
         }
-       // stage('Adjusting default images'){
-         //   steps{
-           //     script{
-             //           echo "Tagging new default image ${SCOPE}."
-               //         sh "docker tag \$(docker images | grep \${SCOPE}\${BUILD_NUMBER}  | awk '{print \$3}') 10.1.0.60:8083/shark:\${SCOPE}"
-                 //       sh 'docker push 10.1.0.60:8083/shark:$SCOPE'
-                // }
-           // }
-       // }
+        stage('Publishing Service..'){
+            steps{
+               sh "docker network create --driver=overlay --attachable shark-${SCOPE}"
+               sh "docker service create -name shark-${SCOPE} --network shark-${SCOPE} ${registry}/shark:${SCOPE}${BUILD_NUMBER} -p 80:8080 --with-registry-auth"
+            }
+        }
     }
     post {
         success {
