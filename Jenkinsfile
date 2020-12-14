@@ -5,7 +5,7 @@ pipeline {
          }
     agent any
     stages {
-        stage('Testing...'){
+        stage('Cleaning...'){
             steps{                
                 echo "previous build number: ${currentBuild.previousBuild.getNumber()}"
                 echo "${env.SCOPE}${currentBuild.number}"
@@ -46,16 +46,31 @@ pipeline {
         stage('Publishing Service...'){
                 steps {
                     script {
-                        try {
-                            sh "docker network create --driver=overlay --attachable shark-${SCOPE}"
-                            echo "creating.."
-                            sh "docker service create --name shark-${SCOPE} --network shark-${SCOPE} ${registry}/shark:${SCOPE}${BUILD_NUMBER} -p 80:8080"
-                        } catch (err) {
-                            echo err.getMessage()
+                        if (env.SCOPE == 'prd'){
+                            try {
+                                echo "creating.."
+                                sh "docker network create --driver=overlay --attachable shark-${SCOPE}"
+                                sh "docker service create --name shark-${SCOPE} --network shark-${SCOPE} --with-registry-auth -p 80:8080 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                            } 
+                            catch (err) {
+                                echo err.getMessage()
+                            }                            
+                                echo "updating..."
+                                sh "docker service update shark-${SCOPE} --detach=false --with-registry-auth --image ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                        }
+                        else{
+                            try {
+                                echo "creating.."
+                                sh "docker network create --driver=overlay --attachable shark-${SCOPE}${BUILD_NUMBER}"
+                                sh "docker service create --name shark-${SCOPE}${BUILD_NUMBER} --network shark-${SCOPE}${BUILD_NUMBER} --with-registry-auth -p 80:8080 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                            } 
+                            catch (err) {
+                                echo err.getMessage()
+                            }                            
+                                echo "updating..."
+                                sh "docker service update shark-${SCOPE}${BUILD_NUMBER} --detach=false --with-registry-auth --image ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                         }
                     }
-                    echo "updating..."
-                    sh "docker service create --name shark-${SCOPE} --network shark-${SCOPE} ${registry}/shark:${SCOPE}${BUILD_NUMBER} -p 80:8080"
                 }
         }
     }
