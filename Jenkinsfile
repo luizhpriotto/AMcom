@@ -97,7 +97,7 @@ pipeline {
                             -H "X-Auth-Key: 34bc1d0cde15163b7fde296322d0e54e05c4c" \
                             -H "Content-Type: application/json" \
                             --data $DATA'
-                        echo "https://shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
+                        echo "https://sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br"
                     }
                     else if (env.RELEASE_QAS == 'yes'){
                         echo "https://sharkh.alegra.com.br"
