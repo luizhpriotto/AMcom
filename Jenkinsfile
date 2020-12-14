@@ -65,19 +65,19 @@ pipeline {
                                 //sh "docker service create --name shark-${SCOPE}${BUILD_NUMBER} --network shark-${SCOPE}${BUILD_NUMBER} --with-registry-auth -p 80:8080 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                                 sh 'docker network create --driver=overlay --attachable shark-${SCOPE}${BUILD_NUMBER}'
                                 sh 'docker service update shark_traefik --network-add shark-${SCOPE}${BUILD_NUMBER}'
-                                sh 'docker service create --name shark-${SCOPE}${BUILD_NUMBER} --network shark-${SCOPE}${BUILD_NUMBER} --with-registry-auth /
-                                --labels traefik.enable=true /
-                                --labels traefik.docker.network=shark_${SCOPE}${BUILD_NUMBER} /
-                                --labels traefik.http.middlewares.sharkh${SCOPE}${BUILD_NUMBER}-mid.redirectscheme.scheme=https /
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.middlewares=sharkh${SCOPE}${BUILD_NUMBER}-mid /
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.rule=Host(`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br`) /
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.entrypoints=web /
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.rule=Host(`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br`) /
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.service=sharkh${SCOPE}${BUILD_NUMBER}-svc /
-                                --labels traefik.http.services.sharkh${SCOPE}${BUILD_NUMBER}-svc.loadbalancer.server.port=8080 /
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.entrypoints=websecure /
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls.certresolver=myresolver /
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls=true /
+                                sh 'docker service create --name shark-${SCOPE}${BUILD_NUMBER} --network shark-${SCOPE}${BUILD_NUMBER} --with-registry-auth \
+                                --labels traefik.enable=true \
+                                --labels traefik.docker.network=shark_${SCOPE}${BUILD_NUMBER} \
+                                --labels traefik.http.middlewares.sharkh${SCOPE}${BUILD_NUMBER}-mid.redirectscheme.scheme=https \
+                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.middlewares=sharkh${SCOPE}${BUILD_NUMBER}-mid \
+                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.rule=Host(`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br`) \
+                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.entrypoints=web \
+                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.rule=Host(`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br`) \
+                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.service=sharkh${SCOPE}${BUILD_NUMBER}-svc \
+                                --labels traefik.http.services.sharkh${SCOPE}${BUILD_NUMBER}-svc.loadbalancer.server.port=8080 \
+                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.entrypoints=websecure \
+                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls.certresolver=myresolver \
+                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls=true \
                                 ${registry}/shark:${SCOPE}${BUILD_NUMBER}'
                             }    
                         }
