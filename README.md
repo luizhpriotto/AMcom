@@ -1,5 +1,5 @@
 <!-- ABOUT THE PROJECT -->
-## Web Application using NODE.JS
+## Web Application Demo using NODE.JS
 
 ### Important Points
 
