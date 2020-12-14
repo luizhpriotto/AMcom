@@ -5,7 +5,7 @@ pipeline {
          }
     agent any
     stages {
-        stage('Cleaning...'){
+        //stage('Cleaning...'){
         //    steps{                
                 //env.BUILDTOCLEAN = ${currentBuild.previousBuild.getNumber()}
                 //echo "Will be implemented"
