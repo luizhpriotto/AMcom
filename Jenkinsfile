@@ -22,12 +22,12 @@ pipeline {
                         parameters: [choice(name: 'RELEASE_PROD', choices: ['yes', 'no'], description: 'Go ahead to deploy on prod (shark.alegra.com.br)?')]
                         if (env.RELEASE_PROD == 'yes') {
                             echo "Git Brunch: Master."
-                            git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
+                            git branch: 'master', url: 'https://github.com/luizhpriotto/amcom.git'
                             sh 'git status'
                         }
                         else{
                             echo "Git Brunch: ${BRANCH}."
-                            git branch: env.BRANCH, url: 'https://github.com/luizhpriotto/amcom/'
+                            git branch: 'env.BRANCH', url: 'https://github.com/luizhpriotto/amcom.git'
                             sh 'git status'
                         }
                     }
