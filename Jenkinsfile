@@ -40,7 +40,7 @@ pipeline {
                         docker.withRegistry( 'http://10.1.0.60:8083/', 'nexus') { 
                             dockerImage.push()
                             echo "Tagging new default image ${SCOPE}."
-                            dockerImage.push("${SCOPE}") 
+                            dockerImage.push("${SCOPE}")
                         }
                     }
                 }
