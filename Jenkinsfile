@@ -34,6 +34,9 @@ pipeline {
                 script{                               
                     dir("node-project") {
                             dockerImage = docker.build "${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                            dockerImage.inside{
+                                sh 'node --version'
+                            }
                             docker.withRegistry( 'http://10.1.0.60:8083/', 'nexus') { 
                                 dockerImage.push()
                                 echo "Tagging new default image ${SCOPE}."
