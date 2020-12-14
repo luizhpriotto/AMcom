@@ -23,6 +23,8 @@ services:
        restart_policy:
          condition: on-failure
          delay: 3s
+     dns: 
+      - 8.8.8.8
      networks:
        - prd
 
@@ -47,6 +49,8 @@ services:
        restart_policy:
          condition: on-failure
          delay: 3s
+     dns: 
+      - 8.8.8.8
      networks:
        - qas
 
@@ -69,7 +73,8 @@ services:
      environment:
        CLOUDFLARE_EMAIL: luiz_priotto@castrolanda.coop.br
        CLOUDFLARE_API_KEY: 34bc1d0cde15163b7fde296322d0e54e05c4c
-     dns: 8.8.8.8
+     dns: 
+      - 8.8.8.8
      networks:
        - prd
        - dev
