@@ -23,10 +23,12 @@ pipeline {
                         if (env.RELEASE_PROD == 'yes') {
                             echo "Git Brunch: Master."
                             git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
+                            sh 'git status'
                         }
                         else{
                             echo "Git Brunch: ${BRANCH}."
                             git branch: env.BRANCH, url: 'https://github.com/luizhpriotto/amcom/'
+                            sh 'git status'
                         }
                     }
                 } 
