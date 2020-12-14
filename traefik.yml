@@ -24,7 +24,7 @@ services:
          condition: on-failure
          delay: 3s
      networks:
-       - shark-prd
+       - prd
 
    traefik:
      image: traefik:2.3
@@ -41,11 +41,11 @@ services:
        - /opt/ssl/acme.json:/acme.json
        - /opt/ssl/traefik.toml:/traefik.toml
      networks:
-       - shark-prd
-       - shark-dev
-       - shark-qas
+       - prd
+       - dev
+       - qas
 
 networks:
-  shark-prd:
-  shark-qas:
-  shark-dev:
+  prd:
+  qas:
+  dev:
