@@ -66,9 +66,9 @@ pipeline {
                                 --label traefik.docker.network=shark_${SCOPE}${BUILD_NUMBER} \
                                 --label traefik.http.middlewares.sharkh${SCOPE}${BUILD_NUMBER}-mid.redirectscheme.scheme=https \
                                 --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.middlewares=sharkh${SCOPE}${BUILD_NUMBER}-mid \
-                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.rule=Host('sharkh2.alegra.com.br') \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.rule=Host`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br` \
                                 --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.entrypoints=web \
-                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.rule=Host('sharkh2.alegra.com.br') \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.rule=Host`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br` \
                                 --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.service=sharkh${SCOPE}${BUILD_NUMBER}-svc \
                                 --label traefik.http.services.sharkh${SCOPE}${BUILD_NUMBER}-svc.loadbalancer.server.port=8080 \
                                 --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.entrypoints=websecure \
