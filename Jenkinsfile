@@ -7,11 +7,11 @@ pipeline {
     stages {
         stage('Cleaning...'){
             steps{                
-                env.BUILDTOCLEAN = ${currentBuild.previousBuild.getNumber()}
-                echo "Will be implemented"
+                //env.BUILDTOCLEAN = ${currentBuild.previousBuild.getNumber()}
+                //echo "Will be implemented"
                 //sh "docker tag \$(docker images | grep \${SCOPE}\${BUILD_NUMBER}  | awk '{print \$3}' 10.1.0.60:8083/shark:\${SCOPE}"
                 //sh "docker images | grep \${SCOPE}\${BUILDTOCLEAN}  | awk '{print \$3}"
-                sh "docker images | grep ${SCOPE}${BUILDTOCLEAN}"
+                sh "echo Y | docker system prune -a"
             }
         }
         stage('Preparing to build:'){
