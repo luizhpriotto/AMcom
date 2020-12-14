@@ -44,9 +44,17 @@ pipeline {
             }
         }
         stage('Publishing Service...'){
-            steps{
-                catchError {
-                    sh "docker network create --driver=overlay --attachable shark-${SCOPE}"
+                steps {
+                    script {
+                        try {
+                            sh "docker network create --driver=overlay --attachable shark-${SCOPE}"
+                            sh "docker service create --name shark-${SCOPE} --network shark-${SCOPE} ${registry}/shark:${SCOPE}${BUILD_NUMBER} -p 80:8080 --with-registry-auth"
+                        } catch (err) {
+                            echo err.getMessage()
+                            echo "EROOOOO"
+                        }
+                    }
+                    echo "EROOOO2"
                     sh "docker service create --name shark-${SCOPE} --network shark-${SCOPE} ${registry}/shark:${SCOPE}${BUILD_NUMBER} -p 80:8080 --with-registry-auth"
                 }
             }
