@@ -19,12 +19,12 @@ services:
          - "traefik.http.routers.shark-websecure.tls.certresolver=myresolver"
          - "traefik.http.routers.shark-websecure.tls=true"
        mode: replicated
-       replicas: 2
+       replicas: 1
        restart_policy:
          condition: on-failure
          delay: 3s
      networks:
-       - shark
+       - shark-prd
 
    traefik:
      image: traefik:2.3
@@ -41,7 +41,11 @@ services:
        - /opt/ssl/acme.json:/acme.json
        - /opt/ssl/traefik.toml:/traefik.toml
      networks:
-       - shark
+       - shark-prd
+       - shark-dev
+       - shark-prd
 
 networks:
-  shark:
+  shark-prd:
+  shark-qas:
+  shark-dev:
