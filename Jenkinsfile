@@ -67,7 +67,7 @@ pipeline {
                             else{
                                 echo "creating.."
                                 env.HOST = "\\(\\`sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br\\`\\)"
-                                sh "docker service create --name shark_${SCOPE}${BUILD_NUMBER} --network shark_qas --with-registry-auth \
+                                sh "docker service create --name shark_${SCOPE} --network shark_${SCOPE}  --with-registry-auth \
                                 --label traefik.enable=true \
                                 --label traefik.docker.network=shark_${SCOPE}${BUILD_NUMBER} \
                                 --label traefik.http.middlewares.sharkh${SCOPE}${BUILD_NUMBER}-mid.redirectscheme.scheme=https \
