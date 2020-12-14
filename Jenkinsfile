@@ -34,7 +34,10 @@ pipeline {
                 script{                               
                     dir("node-project") {
                             dockerImage = docker.build "${registry}/shark:${SCOPE}${BUILD_NUMBER}"
-                            docker.withRegistry( 'http://10.1.0.60:8083', 'nexus' ) { dockerImage.push() }
+                            docker.withRegistry( 'http://10.1.0.60:8083/', 'nexus') { 
+                                dockerImage.push()
+                                dockerImage.push("${SCOPE}") 
+                                }
                     }
                 }
             }
