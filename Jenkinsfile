@@ -58,7 +58,7 @@ pipeline {
             script{
                     env.FQDN = "shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
                     echo "FQDN: ${FQDN}"
-                    env.DATA = '{\"type\":\"A\",\"name\":${FQDN},\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
+                    env.DATA = '{\"type\":\"A\",\"name\":\"env.FQDN\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
                     echo "Creating the DNS to access de aplication on ${SCOPE}..."                
                     sh 'curl -X POST "https://api.cloudflare.com/client/v4/zones/cfb6a7f79905716da43fa085422ffcb3/dns_records" \
                         -H "X-Auth-Email: luiz_priotto@castrolanda.coop.br" \
