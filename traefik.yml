@@ -26,6 +26,30 @@ services:
      networks:
        - prd
 
+   qas:
+     image: 10.1.0.60:8083/shark:qas
+     deploy:
+       labels:
+         - "traefik.enable=true"
+         - "traefik.docker.network=shark_qas"
+         - "traefik.http.middlewares.sharkh-mid.redirectscheme.scheme=https"
+         - "traefik.http.routers.sharkh-web.middlewares=sharkh-mid"
+         - "traefik.http.routers.sharkh-web.rule=Host(`sharkh.alegra.com.br`)"
+         - "traefik.http.routers.sharkh-web.entrypoints=web"
+         - "traefik.http.routers.sharkh-websecure.rule=Host(`sharkh.alegra.com.br`)"
+         - "traefik.http.routers.sharkh-websecure.service=sharkh-svc"
+         - "traefik.http.services.sharkh-svc.loadbalancer.server.port=80"
+         - "traefik.http.routers.sharkh-websecure.entrypoints=websecure"
+         - "traefik.http.routers.sharkh-websecure.tls.certresolver=myresolver"
+         - "traefik.http.routers.sharkh-websecure.tls=true"
+       mode: replicated
+       replicas: 1
+       restart_policy:
+         condition: on-failure
+         delay: 3s
+     networks:
+       - qas
+
    traefik:
      image: traefik:2.3
      ports:
