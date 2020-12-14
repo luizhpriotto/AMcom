@@ -56,14 +56,14 @@ pipeline {
     post {
         success {
             script{
-                    env.DATA = '{\"type\":\"A\",\"name\":\"shark-$SCOPE$BUILD_NUMBER.alegra.com.br\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
+                    env.DATA = '{\"type\":\"A\",\"name\":\"shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
                     echo 'Creating the DNS to access de aplication on $SCOPE...'                
                     sh 'curl -X POST "https://api.cloudflare.com/client/v4/zones/cfb6a7f79905716da43fa085422ffcb3/dns_records" \
                         -H "X-Auth-Email: luiz_priotto@castrolanda.coop.br" \
                         -H "X-Auth-Key: 34bc1d0cde15163b7fde296322d0e54e05c4c" \
                         -H "Content-Type: application/json" \
                         --data $DATA'
-                    echo 'https://shark-$SCOPE$BUILD_NUMBER.alegra.com.br'
+                    echo "https://shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
             }
         }
     }
