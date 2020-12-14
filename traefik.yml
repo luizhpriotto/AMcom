@@ -2,7 +2,7 @@ version: '3'
 
 services:
 
-   shark:
+   prd:
      image: 10.1.0.60:8083/shark:prd
      deploy:
        labels:
@@ -43,7 +43,7 @@ services:
      networks:
        - shark-prd
        - shark-dev
-       - shark-prd
+       - shark-qas
 
 networks:
   shark-prd:
