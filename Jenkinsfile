@@ -26,7 +26,7 @@ pipeline {
                             git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
                         }
                         else{
-                            git branch: 'master', url: 'https://github.com/luizhpriotto/amcom/'
+                            git branch: env.BRANCH, url: 'https://github.com/luizhpriotto/amcom/'
                         }
                     }
                 } 
