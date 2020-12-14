@@ -17,11 +17,3 @@
 * [Nexus](http://10.1.0.60:8081)
 * [Rancher](http://10.1.0.60:8280)
 * [Vizualizer](http://10.1.0.60:8282)
-
-
-## Testing
-* PRD -> master (ok)
-* QAS -> master (ok)
-* QAS -> version1 (pending)
-* QAS -> new service (ok)
-* Changing files on the branch "version" (pending).
