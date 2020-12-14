@@ -51,15 +51,21 @@ pipeline {
                     script {
                         if (env.SCOPE == 'prd'){
                             try {
-                                echo "creating.."
+                                echo "creating netwokrk.."
                                 sh "docker network create --driver=overlay --attachable shark-${SCOPE}"
-                                sh "docker service create --name shark-${SCOPE} --network shark-${SCOPE} --with-registry-auth -p 80:8080 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                             } 
                             catch (err) {
                                 echo err.getMessage()
-                            }                            
+                            } 
+                            try{ 
                                 echo "updating..."
                                 sh "docker service update shark-${SCOPE} --detach=false --with-registry-auth --image ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
+                            }
+                            catch (err){
+                                echo err.getMessage()
+                            }                              
+                                echo "creating service"
+                                sh "docker service create --name shark-${SCOPE} --network shark-${SCOPE} --with-registry-auth -p 80:8080 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                         }
                         else{
                             try {
