@@ -88,7 +88,7 @@ pipeline {
         success {
             script{
                     if (env.RELEASE_QAS == 'no'){
-                        env.FQDN = "shark${SCOPE}${BUILD_NUMBER}.alegra.com.br"
+                        env.FQDN = "sharkh${SCOPE}${BUILD_NUMBER}.alegra.com.br"
                         echo "FQDN: ${FQDN}"
                         env.DATA = '{\"type\":\"A\",\"name\":\"'+"${FQDN}"+'\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
                         echo "Creating the DNS to access de aplication on ${SCOPE}..."                
