@@ -50,14 +50,14 @@ pipeline {
                 steps {
                     script {
                         if (env.SCOPE == 'prd'){
-                                sh "docker service update shark_${SCOPE} --no-resolve-image --image ${registry}/shark:${SCOPE}${BUILD_NUMBER} --with-registry-auth"
+                                sh "docker service update shark_${SCOPE} --image ${registry}/shark:${SCOPE}${BUILD_NUMBER} --with-registry-auth"
                             }  
                         else{
                             env.RELEASE_QAS = input message: 'Is it an upate?', ok: 'Release!', 
                             parameters: [choice(name: 'RELEASE_QAS', choices: ['yes', 'no'], description: 'Go ahead to deploy on QAS (sharkh.alegra.com.br)?')]
                             if (env.RELEASE_QAS == 'yes') {
                                 echo "updating..."
-                                sh "docker service update shark_${SCOPE} --no-resolve-image --image ${registry}/shark:${SCOPE}${BUILD_NUMBER} --with-registry-auth "
+                                sh "docker service create shark_${SCOPE} --with-registry-auth ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                             }
                             else{
                                 echo "creating.."
