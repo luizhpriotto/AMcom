@@ -57,7 +57,6 @@ pipeline {
                     echo "EROOOO2"
                     sh "docker service create --name shark-${SCOPE} --network shark-${SCOPE} ${registry}/shark:${SCOPE}${BUILD_NUMBER} -p 80:8080 --with-registry-auth"
                 }
-            }
         }
     }
     post {
