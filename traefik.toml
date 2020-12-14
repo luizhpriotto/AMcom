@@ -17,7 +17,8 @@
 #    entryPoint = "web"
 [certificatesResolvers.myresolver.acme.dnsChallenge]
   provider = "cloudflare"
-  delayBeforeCheck = 1
+  delayBeforeCheck = 10
+  resolvers = 8.8.8.8:53
 
 [log]
   level = "INFO"
