@@ -35,9 +35,9 @@ pipeline {
                     dir("node-project") {
                             dockerImage = docker.build "${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                             docker.withRegistry( 'http://10.1.0.60:8083/', 'nexus') { 
-                                //dockerImage.push()
+                                dockerImage.push()
                                 echo "Tagging new default image ${SCOPE}."
-                                //dockerImage.push("${SCOPE}") 
+                                dockerImage.push("${SCOPE}") 
                                 }
                     }
                 }
@@ -56,16 +56,19 @@ pipeline {
     post {
         success {
             script{
-                    env.FQDN = "shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
-                    echo "FQDN: ${FQDN}"
-                    env.DATA = '{\"type\":\"A\",\"name\":\"'+"${FQDN}"+'\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
-                    echo "Creating the DNS to access de aplication on ${SCOPE}..."                
-                    sh 'curl -X POST "https://api.cloudflare.com/client/v4/zones/cfb6a7f79905716da43fa085422ffcb3/dns_records" \
-                        -H "X-Auth-Email: luiz_priotto@castrolanda.coop.br" \
-                        -H "X-Auth-Key: 34bc1d0cde15163b7fde296322d0e54e05c4c" \
-                        -H "Content-Type: application/json" \
-                        --data $DATA'
-                    echo "https://shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
+                    if (env.SCOPE != 'prd'){
+                        env.FQDN = "shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
+                        echo "FQDN: ${FQDN}"
+                        env.DATA = '{\"type\":\"A\",\"name\":\"'+"${FQDN}"+'\",\"content\":\"177.91.38.105\",\"ttl\":120,\"priority\":10,\"proxied\":false}'
+                        echo "Creating the DNS to access de aplication on ${SCOPE}..."                
+                        sh 'curl -X POST "https://api.cloudflare.com/client/v4/zones/cfb6a7f79905716da43fa085422ffcb3/dns_records" \
+                            -H "X-Auth-Email: luiz_priotto@castrolanda.coop.br" \
+                            -H "X-Auth-Key: 34bc1d0cde15163b7fde296322d0e54e05c4c" \
+                            -H "Content-Type: application/json" \
+                            --data $DATA'
+                        echo "https://shark-${SCOPE}${BUILD_NUMBER}.alegra.com.br"
+                    }
+                    echo "https://shark.alegra.com.br"
             }
         }
     }
