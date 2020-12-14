@@ -65,16 +65,16 @@ pipeline {
                                 //em uso: sh 'docker network create --driver=overlay --attachable shark_${SCOPE}${BUILD_NUMBER}'
                                 //sh 'docker service update shark_traefik --network-add shark_${SCOPE}${BUILD_NUMBER}'
                                 sh "docker service create --name shark_${SCOPE}${BUILD_NUMBER} --network shark_qas --with-registry-auth \
-                                --labels traefik.enable=true \
-                                --labels traefik.docker.network=shark_${SCOPE}${BUILD_NUMBER} \
-                                --labels traefik.http.middlewares.sharkh${SCOPE}${BUILD_NUMBER}-mid.redirectscheme.scheme=https \
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.middlewares=sharkh${SCOPE}${BUILD_NUMBER}-mid \
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.entrypoints=web \
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.service=sharkh${SCOPE}${BUILD_NUMBER}-svc \
-                                --labels traefik.http.services.sharkh${SCOPE}${BUILD_NUMBER}-svc.loadbalancer.server.port=8080 \
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.entrypoints=websecure \
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls.certresolver=myresolver \
-                                --labels traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls=true \
+                                --label traefik.enable=true \
+                                --label traefik.docker.network=shark_${SCOPE}${BUILD_NUMBER} \
+                                --label traefik.http.middlewares.sharkh${SCOPE}${BUILD_NUMBER}-mid.redirectscheme.scheme=https \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.middlewares=sharkh${SCOPE}${BUILD_NUMBER}-mid \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-web.entrypoints=web \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.service=sharkh${SCOPE}${BUILD_NUMBER}-svc \
+                                --label traefik.http.services.sharkh${SCOPE}${BUILD_NUMBER}-svc.loadbalancer.server.port=8080 \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.entrypoints=websecure \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls.certresolver=myresolver \
+                                --label traefik.http.routers.sharkh${SCOPE}${BUILD_NUMBER}-websecure.tls=true \
                                 ${registry}/shark:${SCOPE}${BUILD_NUMBER}"
                             }    
                         }
