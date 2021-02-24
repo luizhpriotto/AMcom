@@ -71,8 +71,8 @@ services:
        - /opt/ssl/acme.json:/acme.json
        - /opt/ssl/traefik.toml:/traefik.toml
      environment:
-       CLOUDFLARE_EMAIL: luiz_priotto@castrolanda.coop.br
-       CLOUDFLARE_API_KEY: 34bc1d0cde15163b7fde296322d0e54e05c4c
+       CLOUDFLARE_EMAIL: your@mail
+       CLOUDFLARE_API_KEY: apikey
      dns: 
       - 8.8.8.8
      networks:
