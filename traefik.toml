@@ -10,7 +10,7 @@
     address = ":443"
 
 [certificatesResolvers.myresolver.acme]
-  email = "luiz_priotto@castrolanda.coop.br"
+  email = "your@mail"
   storage = "acme.json"
 #  [certificatesResolvers.myresolver.acme.tlsChallenge]
 #  [certificatesResolvers.myresolver.acme.httpChallenge]
